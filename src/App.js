@@ -12,9 +12,11 @@ function App() {
 
   useEffect(() => {
 
-   fetch("notes.json")
+  //  fetch("notes.json")
+   fetch("http://localhost:4000/notes")
    .then(res=>res.json())
    .then(data=>setNotes(data))
+  //  .then(data=>console.log(data))
 
     
   }, []);
@@ -24,7 +26,17 @@ to handle search by query, and it will be passed as props to header
 
   */
   
+const handleSearch =(event) =>{
+  event.preventDefault();
+  const queryText = event.target.searchText.value;
+  // console.log('hellow',queryText)
+  if(queryText){
+    fetch(`http://localhost:4000/notes?userName=${queryText}`)
+    .then(res=>res.json())
+    .then(data=>setNotes(data));
+  }
 
+}
 
 
 
@@ -66,7 +78,7 @@ to post data to backend, and it will be passed as props to InputFrom.
 
   return (
     <div className="App">
-      <Header  />
+      <Header handleSearch={handleSearch} />
       <InputForm />
       <div className="row row-cols-1 row-cols-md-3 g-4 m-2">
         {notes.map((note) => (
